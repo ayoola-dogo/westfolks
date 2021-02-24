@@ -26,7 +26,7 @@
                             <div class="text-center text-muted mb-4">
                                 <small>Create Account</small>
                             </div>
-                            <form role="form" action="{% url 'registration:register' %}" method="POST">
+                            <form role="form" action="{% url 'accounts:register' %}" method="POST">
                                  {% csrf_token %}
                                 <div class="form-group">
                                     <div class="input-group input-group-alternative mb-3">
@@ -49,7 +49,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
                                         </div>
-                                        <input type="text" name="email" class="form-control" id="{{ user_form.id_email }}" placeholder="Email">
+                                        <input type="email" name="email" class="form-control" id="{{ user_form.id_email }}" placeholder="Email">
                                         {{ user_form.email.errors }}
                                     </div>
                                 </div>

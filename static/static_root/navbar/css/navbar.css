@@ -37,7 +37,7 @@ nav{
     height: 5rem;
     width: 100vw;
     background-color: #105a89;
-    z-index: 2;
+    z-index: 99;
 }
 
 .ul-container > div > div{
@@ -85,6 +85,7 @@ li a:active{
 
     nav{
         font-size: .55rem;
+        z-index: 99;
     }
 
     .logo{
@@ -247,6 +248,7 @@ li a:active{
         width: 100vw;
         background-color: #105a89;
         font-size: unset;
+        z-index: 99;
     }
 
     nav ul{
