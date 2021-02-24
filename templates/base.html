@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <title>{% block title %}{% endblock title %}</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!--     Fonts and icons     -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+  <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+  <!-- Nucleo Icons -->
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/css/nucleo-icons.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/css/nucleo-svg.css' %}">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/css/font-awesome.css' %}">
+  <!-- CSS Files -->
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/css/argon-design-system.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'navbar/css/navbar.css' %}">
+  <style>
+    {% block style %}
+    {% endblock style %}
+  </style>
+</head>
+<body>
+  {% include 'navbar.html' %}
+  {% block content %}
+  {% endblock content %}
+  <script></script>
+</body>
+</html>
