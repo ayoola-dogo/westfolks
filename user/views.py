@@ -1,7 +1,8 @@
-from django.shortcuts import render, reverse
+from django.shortcuts import render, reverse, redirect
 from django.views import View
 from .forms import UserLoginForm
 from django.http import HttpResponseRedirect, HttpResponse, Http404
+from django.contrib.auth.views import LogoutView as AuthLogoutView
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth import authenticate, login, logout
@@ -11,7 +12,6 @@ from django.core import exceptions
 from django.views.generic.edit import UpdateView
 from django.contrib.auth import get_user_model
 from django.views.decorators.cache import never_cache
-from .models import User
 
 
 # Create your views here.
@@ -40,3 +40,11 @@ class LoginView(View):
         user_form = self.form_class()
         context = {'user_form': user_form}
         return render(request, self.template_name, context)
+
+
+class LogoutView(AuthLogoutView):
+    redirect_field_name = 'user:login'
+
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        return redirect(self.redirect_field_name)
