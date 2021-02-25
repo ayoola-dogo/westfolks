@@ -1,9 +1,9 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from company.models import Company
 from django.urls import reverse
 from django.db.models.signals import post_save
 import os
+from shutil import copy2
 
 User = get_user_model()
 
@@ -11,7 +11,6 @@ User = get_user_model()
 # Create your models here.
 class Account(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    company = models.OneToOneField(Company, on_delete=models.SET_NULL, null=True)
     website_url = models.URLField()
 
     def __str__(self):
@@ -24,7 +23,7 @@ def create_account(sender, **kwargs):
 
         # Create user account directory for file management
         BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        path1 = os.path.join(BASE_DIR, 'static/media/{}'.format(kwargs['instance'].email))
+        path1 = os.path.join(BASE_DIR, 'static/media/{}/img'.format(kwargs['instance'].email))
 
         try:
             os.makedirs(path1)
@@ -32,6 +31,8 @@ def create_account(sender, **kwargs):
             print("Creation of the directory {} failed could be due to directory already exist".format(path1))
         else:
             print("Successfully created the directories")
+
+        # copy2(os.path.join(BASE_DIR, 'static/static_root/assets/img/default.png'), path1)
 
 
 post_save.connect(create_account, sender=User)

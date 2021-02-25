@@ -1,0 +1,187 @@
+{% block style %}
+
+ .content-thread {
+    padding-top: 6vw;
+    padding-left: 10vw;
+    padding-right: 10vw;
+  }
+
+  .media {
+    background-color: white;
+    border-radius: 0.5vw;
+    -moz-box-shadow: 5px 10px 7px rgba(210, 208, 208, 0.9);
+   -webkit-box-shadow: 5px 10px 7px rgba(210, 208, 208, 0.9);
+    box-shadow: inset 5px 10px 7px rgba(210, 208, 208, 0.9);
+  }
+
+  .rounded-circle {
+    margin-left: 1vw;
+    margin-right: 1vw;
+    padding-top: 0.5vw;
+    padding-bottom: 0.5vw;
+    border-radius: 50%;
+    width: 70px;
+  }
+
+  .article-metadata {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: center;
+    padding-left: 1vw;
+    padding-right: 1vw;
+    background-color: #2B547E;
+    opacity: 1;
+    transform: translate(0%, -20%);
+  }
+
+  .meta-info {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-content: flex-start;
+  }
+
+  .mr-user {
+    color: white;
+    text-decoration: none;
+  }
+
+  .text-date {
+  }
+
+  .article-title {
+    background: linear-gradient(45deg, black, black, #105a89);
+    padding: 1vw;
+    color: white;
+    padding-bottom: 2vw;
+<!--    text-decoration: underline;-->
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+  }
+
+  .article-content {
+    padding: 0vw 2vw 2vw 2vw;
+  }
+
+  .update-del {
+    margin-left: auto;
+    order: 2;
+  }
+
+  .btn-secondary {
+    color: #90ee90;
+    border: 1px solid;
+    padding: 8px;
+    font-size: 13px;
+    box-shadow: 1px 2px;
+    background-color: #2B547E;
+    text-decoration: none;
+    border-radius: 5px;
+  }
+
+  .btn-danger {
+    color:red;
+    border: 1px solid;
+    padding: 8px;
+    font-size: 13px;
+    box-shadow: 1px 2px;
+    background-color: #2B547E;
+    text-decoration: none;
+    border-radius: 5px;
+  }
+
+  .btn-reply {
+    margin: 1vw;
+    float: right;
+    border: 1px solid;
+    padding: 8px;
+    font-size: 13px;
+    background-color: #fff;
+    color: #105a89;
+    box-shadow: 0 0 15px #105a89;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: .4s;
+    outline: none;
+    text-decoration: none;
+    border-radius: 5px;
+  }
+
+  .hr-style {
+    border: 0.5px solid rgba(0, 123, 167, 0.1);
+  }
+
+  .post-reply {
+    padding: 0;
+    box-sizing: border-box;
+    box-show: inset 0 0 7px rgba(210, 208, 208, 0.9)
+    border-radius: 3px;
+    overflow: hidden;
+    border-color: #2B547E;
+    border-style: solid;
+    margin-top: 2px;
+    }
+
+  #post-title {
+    background-color: rgb(3, 24, 37);
+    padding: 1.5vw;
+    margin-top: -0.5vw;
+    color: white;
+  }
+
+  #post-content {
+    padding: 1vw 2vw 2vw 2vw;
+  }
+
+  .empty-space {
+    height: 50vh;
+  }
+
+{% endblock style %}
+
+{% block content %}
+    <div class="content-thread">
+      <article class="media">
+        <div class="media-body">
+          <h3 class="article-title">{{ thread.topic }}</h3>
+          <div class="article-metadata">
+            <img class="rounded-circle article-img" src="{{ thread.author.profile.image.url }}">
+            <div class="meta-info">
+              <a class="mr-user" href="#">{{ thread.author }}</a>
+              <small class="text-date" style="margin-top:0.5vw;">{{ thread.posted_date }}</small>
+            </div>
+            <div class="update-del">
+              {% if thread.author == request.user %}
+                <a class="btn-secondary" href="{% url 'forums:thread-update' thread.id %}">Update</a>
+                <a class="btn-danger" href="{% url 'forums:thread-delete' thread.id %}">Delete</a>
+              {% endif %}
+            </div>
+          </div>
+          <p class="article-content">{{ thread.content }}</p>
+          {% if posts %}
+            {% for post in posts %}
+            <div class="post-reply">
+              <hr class="hr-style" />
+              <p id="post-title">
+                Re: {{ thread.topic }}
+                <span>
+                  <img src="{{ post.author.profile.image.url }}" class="comment-image" alt="">
+                  <sup>{{ post.author.username }}</sup>
+                  <sub>posted on: {{ post.posted_date }}</sub>
+                </span>
+              </p>
+              <p id="post-content">{{ post.content }}</p>
+            </div>
+            {% endfor %}
+          {% endif %}
+          <a class="btn-reply" href="{% url 'posts:post-create' thread.id %}">Reply to Thread</a>
+        </div>
+      </article>
+      <div class="empty-space"></div>
+    </div>
+{% endblock %}

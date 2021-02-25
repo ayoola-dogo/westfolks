@@ -1,55 +1,70 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Create A Company{% endblock title %}
+
+{% block style %}
+.container{
+  margin-top: 8%;
+}
+{% endblock style %}
+
 {% block content %}
-    <form method="post" enctype="multipart/form-data">
+<section class="container">
+    <form method="post" enctype="multipart/form-data" action="">
+      {% csrf_token %}
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
           <div class="form-group">
             <input type="text" class="form-control" id="{{ company_form.id_company_name }}" placeholder="Company Name">
             {{ company_form.company_name.errors }}
           </div>
         </div>
-        <div class="col-md-6">
+      </div>
+      <div class="row">
+        <div class="col-md-12">
           <div class="form-group">
+            <div class="input-group mb-4">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="ni ni-zoom-split-in"></i></span>
+              </div>
             <input type="file" placeholder="Company Logo" class="form-control" id="{{ company_form.id_company_logo }}"
             accept="image/png image/jpeg"/>
-            {{ company_form.company_name.errors }}
+            {{ company_form.company_log.errors }}
           </div>
         </div>
       </div>
+      </div>
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
           <div class="form-group">
             <div class="input-group mb-4">
               <div class="input-group-prepend">
                 <span class="input-group-text"><i class="ni ni-zoom-split-in"></i></span>
               </div>
               <input type="text" class="form-control" id="{{ company_form.id_company_mantra }}" placeholder="Company Mantra">
-              {{ company_form.company_name.errors }}
+              {{ company_form.company_mantra.errors }}
             </div>
           </div>
         </div>
-        <div class="col-md-6">
+      </div>
+        <div class="row">
+        <div class="col-md-12">
           <div class="form-group">
             <div class="input-group mb-4">
-               <input type="text" class="form-control" id="{{ company_form.id_company_description }}" placeholder="Company Description">
-              {{ company_form.company_name.errors }}
               <div class="input-group-append">
                 <span class="input-group-text"><i class="ni ni-zoom-split-in"></i></span>
               </div>
+              <input type="text" class="form-control" id="{{ company_form.id_company_description }}" placeholder="Company Description">
+              {{ company_form.company_description.errors }}
             </div>
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="form-group has-success">
-            <input type="text" placeholder="Success" class="form-control is-valid" />
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-group has-danger">
-            <input type="email" placeholder="Error Input" class="form-control is-invalid" />
-          </div>
-        </div>
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary mt-4">Create Company</button>
       </div>
     </form>
+</section>
 {% endblock content %}
