@@ -6,7 +6,7 @@ from .models import User
 # Register your models here.
 class UserCustomAdmin(UserAdmin):
     list_display = ('first_name', 'last_name', 'email', 'date_joined', 'last_login', 'is_staff', 'is_admin', 'is_active')
-    search_fields = ['first_name', 'lastname', 'email']
+    search_fields = ['first_name', 'last_name', 'email']
     list_filter = ()
     readonly_fields = ('date_joined', 'last_login')
     fieldsets = (
