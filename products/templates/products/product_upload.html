@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Create A Company{% endblock title %}
+
+{% block style %}
+.container{
+  margin-top: 8%;
+}
+{% endblock style %}
+
+{% block content %}
+<section class="container">
+    <form method="post" action="{% url 'products:product-upload' %}" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <input type="text" name="product_name" class="form-control" id="{{ prod_form.id_product_name }}" placeholder="Product Name">
+            {{ prod_form.product_name.errors }}
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <input type="file" name="image" class="form-control" id="{{ prod_form.id_image }}" placeholder="Product Image" accept="image/png image/jpeg">
+            {{ prod_form.image.errors }}
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <div class="input-group mb-4">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="ni ni-zoom-split-in"></i></span>
+              </div>
+            <input type="text" name="category" placeholder="Product Category" class="form-control" id="{{ prod_form.id_category }}"
+            />
+            {{ prod_form.category.errors }}
+          </div>
+        </div>
+      </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <div class="input-group mb-4">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="ni ni-zoom-split-in"></i></span>
+              </div>
+              <textarea name="description" class="form-control" id="{{ prod_form.id_description }}" rows="3" placeholder="Product Description"></textarea>
+              {{ prod_form.description.errors }}
+            </div>
+          </div>
+        </div>
+      </div>
+        <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <div class="input-group mb-4">
+              <div class="input-group-append">
+                <span class="input-group-text"><i class="ni ni-zoom-split-in"></i></span>
+              </div>
+              <input type="url" name="url" class="form-control" id="{{ prod_form.id_url }}" placeholder="Product URL">
+              {{ prod_form.url.errors }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary mt-4">Upload Product</button>
+      </div>
+    </form>
+</section>
+{% endblock content %}
