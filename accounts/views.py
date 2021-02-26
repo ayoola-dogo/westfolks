@@ -3,9 +3,6 @@ from django.views import View
 from .forms import UserRegisterForm
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from django.contrib.auth import login, authenticate
-from django.contrib.auth.views import LogoutView as AuthLogoutView
-from django.views.generic import RedirectView
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.urls import reverse
 from django.contrib import messages
@@ -15,9 +12,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 import pytz
-from django.core import exceptions
-from django.views.generic.edit import UpdateView
-from django.contrib.auth import get_user_model
+from company.models import Company
 
 
 # Create your views here.
@@ -56,7 +51,11 @@ class UserProfileView(View):
     # User will be directed to the profile page after logging in
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated and request.user.is_active:
-            context = {}
+            if request.user.account.company:
+                company = Company.objects.get(account=request.user.account)
+                context = {'company': company}
+            else:
+                context = {}
             return render(request, self.template_name, context=context)
         else:
             return HttpResponseRedirect(reverse('accounts:register'))

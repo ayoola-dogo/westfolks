@@ -1,0 +1,9 @@
+def get_context_data(self, **kwargs):
+    context = super().get_context_data(**kwargs)
+    context['account'] = self.request.user
+    return context
+
+def form_valid(self, comp_form):
+    comp_form.instance.account = self.request.user
+    return super().form_valid(comp_form)
+

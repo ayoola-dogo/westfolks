@@ -3,6 +3,9 @@
 {% block title %}View Your Account{% endblock title %}
 
 {% block style %}
+.profile-card {
+  margin-top: -10%;
+}
 .account-btn {
 }
 
@@ -49,37 +52,37 @@
                 </div>
                 <div class="col-lg-4 order-lg-3 text-lg-right align-self-lg-center">
                   <div class="card-profile-actions py-4 mt-lg-0">
-                    <a href="#" class="btn btn-sm btn-info mr-4 float-left account-btn">Update Account</a>
-                    <a href="{% url 'company:create-company' %}" class="btn btn-sm btn-default float-right company-btn">Add Company</a>
+                    <a href="#" class="btn btn-sm mr-4 float-left account-btn"></a>
+                    <a href="#" class="btn btn-sm float-right company-btn"></a>
                   </div>
                 </div>
                 <div class="col-lg-4 order-lg-1">
                   <div class="card-profile-stats d-flex justify-content-center">
                     <div>
-                      <span class="field-name">First Name</span>
-                      <span class="description field-value">Show first name</span>
+                      <span class="field-name">Company</span>
+                      <span class="description field-value">{{ company.company_name }}</span>
                     </div>
                     <div>
-                      <span class="field-name">Last Name</span>
-                      <span class="description field-value">Show last name</span>
+                      <span class="field-name"></span>
+                      <span class="description field-value"></span>
                     </div>
                     <div>
-                      <span class="field-name">Business Name</span>
-                      <span class="description field-value">{{ comp_form.company_name }}</span>
+                      <span class="field-name">Mantra</span>
+                      <span class="description field-value">{{ company.mantra }}</span>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="text-center mt-5">
-                <h3>Show company name<span class="font-weight-light"></span></h3>
-                <div class="h6 font-weight-300"><i class="ni location_pin mr-2"></i>show company location</div>
-                <div class="h6 mt-4"><i class="ni business_briefcase-24 mr-2"></i>Solution Manager - Creative Tim Officer</div>
-                <div><i class="ni education_hat mr-2"></i>University of Computer Science</div>
+                <h3>{{ company.company_name }}<span class="font-weight-light"></span></h3>
+                <div class="h6 font-weight-300"><i class="ni location_pin mr-2"></i>{{ company.account.user.first_name}}&nbsp;{{ company.account.user.last_name}}</div>
+                <div class="h6 mt-4"><i class="ni business_briefcase-24 mr-2"></i>Company URL</div>
+                <div><i class="ni education_hat mr-2"></i>{{ company.account.website_url }}</div>
               </div>
               <div class="mt-5 py-5 border-top text-center">
                 <div class="row justify-content-center">
                   <div class="col-lg-9">
-                    <p>An artist of considerable range, Ryan — the name taken by Melbourne-raised, Brooklyn-based Nick Murphy — writes, performs and records all of his own music, giving it a warm, intimate feel with a solid groove structure. An artist of considerable range.</p>
+                    <p>{{ company.description }}</p>
                     <a href="javascript:;">Show more</a>
                   </div>
                 </div>

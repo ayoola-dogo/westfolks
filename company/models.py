@@ -6,9 +6,6 @@ from accounts.models import Account
 from django.contrib.auth import get_user_model
 
 
-User = get_user_model()
-
-
 def change_image_path(image):
     filename = os.path.split(image)[1]
     return filename
@@ -16,7 +13,7 @@ def change_image_path(image):
 
 # Create your models here.
 class Company(models.Model):
-    account = models.ForeignKey(User, null=False, blank=False, on_delete=models.CASCADE)
+    account = models.OneToOneField(Account, null=False, blank=False, on_delete=models.CASCADE)
     company_name = models.CharField(max_length=150, null=True, blank=True)
     logo = models.ImageField(default='default/img/default.png', upload_to='default/img/', null=True)
     mantra = models.TextField(max_length=300, null=True, blank=True)
