@@ -50,7 +50,11 @@
                 <div class="col-lg-4 order-lg-3 text-lg-right align-self-lg-center">
                   <div class="card-profile-actions py-4 mt-lg-0">
                     <a href="#" class="btn btn-sm btn-info mr-4 float-left account-btn">Update Account</a>
-                    <a href="{% url 'company:create-company' %}" class="btn btn-sm btn-default float-right company-btn">Add Company</a>
+                    {% if company %}
+                      <a href="{% url 'company:view-company' %}" class="btn btn-sm btn-default float-right company-btn">View Company</a>
+                    {% else %}
+                      <a href="{% url 'company:create-company' %}" class="btn btn-sm btn-default float-right company-btn">Add Company</a>
+                    {% endif %}
                   </div>
                 </div>
                 <div class="col-lg-4 order-lg-1">
