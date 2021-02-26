@@ -4,7 +4,7 @@ from .models import Company
 
 # Register your models here.
 class CompanyAdmin(admin.ModelAdmin):
-    fields = ('company_name', 'company_mantra')
+    fields = ('account', 'company_name', 'logo', 'mantra', 'description')
 
 
 admin.site.register(Company, CompanyAdmin)

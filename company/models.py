@@ -1,8 +1,12 @@
 from django.db import models
-from accounts.models import Account
 from django.conf import settings
 from PIL import Image
 import os
+from accounts.models import Account
+from django.contrib.auth import get_user_model
+
+
+User = get_user_model()
 
 
 def change_image_path(image):
@@ -12,12 +16,11 @@ def change_image_path(image):
 
 # Create your models here.
 class Company(models.Model):
-    # The account field reference the account model not the instance
-    account = models.OneToOneField(Account, null=True, blank=False, on_delete=models.CASCADE)
-    company_name = models.CharField(max_length=150)
-    company_logo = models.ImageField(default='default/img/default.png', upload_to='default/img/', null=True)
-    company_mantra = models.TextField(max_length=300, null=True, blank=True)
-    company_description = models.TextField(max_length=500, null=True, blank=True)
+    account = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
+    company_name = models.CharField(max_length=150, null=True, blank=True)
+    logo = models.ImageField(default='default/img/default.png', upload_to='default/img/', null=True)
+    mantra = models.TextField(max_length=300, null=True, blank=True)
+    description = models.TextField(max_length=500, null=True, blank=True)
 
     def __str__(self):
         return '{}'.format(self.company_name)
@@ -25,21 +28,21 @@ class Company(models.Model):
     # Override the save method
     def save(self, **kwargs):
         super().save()
-        img = Image.open(self.company_logo.path)
+        img = Image.open(self.logo.path)
         if img.width != 200 and img.height != 200:
             output_size = (200, 200)
-            self.initial_path = self.company_logo.path
-            filename = change_image_path(self.company_logo.path)
-            print(self.account.user.email)
+            self.initial_path = self.logo.path
+            filename = change_image_path(self.logo.path)
             if filename != "default.png":
-                self.company_logo.path = os.path.join(settings.MEDIA_ROOT, "{}/img/{}".format(self.account.user.email,
-                                                                                              filename))
-                img.resize(output_size, Image.ANTIALIAS).save(self.company_logo.path)
-                os.remove(self.initial_path)
-
-    def delete(self, using=None, keep_parents=False):
-        super().delete()
-        os.remove(self.company_logo.path)
+                pass
+    #             self.company_logo.path = os.path.join(settings.MEDIA_ROOT, "{}/img/{}".format(self.account.user.email,
+    #                                                                                           filename))
+    #             img.resize(output_size, Image.ANTIALIAS).save(self.company_logo.path)
+    #             os.remove(self.initial_path)
+    #
+    # def delete(self, using=None, keep_parents=False):
+    #     super().delete()
+    #     os.remove(self.company_logo.path)
 
     class Meta:
         verbose_name = 'Company'

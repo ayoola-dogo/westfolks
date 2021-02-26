@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import CreateCompanyView
+from .views import CreateCompanyView, CompanyView
 
 
 app_name = 'company'

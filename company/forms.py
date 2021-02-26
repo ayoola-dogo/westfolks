@@ -7,4 +7,4 @@ from .models import Company
 class CreateCompanyForm(forms.ModelForm):
     class Meta:
         model = Company
-        fields = ['company_name', 'company_logo', 'company_mantra', 'company_description']
+        fields = ['account', 'company_name', 'logo', 'mantra', 'description']

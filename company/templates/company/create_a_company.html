@@ -12,12 +12,12 @@
 
 {% block content %}
 <section class="container">
-    <form method="post" enctype="multipart/form-data" action="">
+    <form method="post" action="{% url 'company:create-company' %}" enctype="multipart/form-data">
       {% csrf_token %}
       <div class="row">
         <div class="col-md-12">
           <div class="form-group">
-            <input type="text" class="form-control" id="{{ company_form.id_company_name }}" placeholder="Company Name">
+            <input type="text" name="company_name" class="form-control" id="{{ company_form.id_company_name }}" placeholder="Company Name">
             {{ company_form.company_name.errors }}
           </div>
         </div>
@@ -29,9 +29,9 @@
               <div class="input-group-prepend">
                 <span class="input-group-text"><i class="ni ni-zoom-split-in"></i></span>
               </div>
-            <input type="file" placeholder="Company Logo" class="form-control" id="{{ company_form.id_company_logo }}"
+            <input type="file" name="logo" placeholder="Company Logo" class="form-control" id="{{ company_form.id_logo }}"
             accept="image/png image/jpeg"/>
-            {{ company_form.company_log.errors }}
+            {{ company_form.log.errors }}
           </div>
         </div>
       </div>
@@ -43,8 +43,8 @@
               <div class="input-group-prepend">
                 <span class="input-group-text"><i class="ni ni-zoom-split-in"></i></span>
               </div>
-              <input type="text" class="form-control" id="{{ company_form.id_company_mantra }}" placeholder="Company Mantra">
-              {{ company_form.company_mantra.errors }}
+              <textarea name="mantra" class="form-control" id="{{ company_form.id_mantra }}" rows="3" placeholder="Company Mantra"></textarea>
+              {{ company_form.mantra.errors }}
             </div>
           </div>
         </div>
@@ -56,8 +56,8 @@
               <div class="input-group-append">
                 <span class="input-group-text"><i class="ni ni-zoom-split-in"></i></span>
               </div>
-              <input type="text" class="form-control" id="{{ company_form.id_company_description }}" placeholder="Company Description">
-              {{ company_form.company_description.errors }}
+              <textarea name="description" class="form-control" id="{{ company_form.id_company_description }}" rows="3" placeholder="Company Description"></textarea>
+              {{ company_form.description.errors }}
             </div>
           </div>
         </div>
