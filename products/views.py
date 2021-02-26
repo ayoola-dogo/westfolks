@@ -8,6 +8,7 @@ from .models import Product
 from .forms import ProductForm
 from company.models import Company
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 
 
 # Create your views here.
@@ -28,10 +29,11 @@ def search(request):
 
 @login_required
 def product_upload(request):
+    template = 'products/product_upload.html'
+    prod_form = ProductForm()
+    context = {'prod_form': prod_form}
+
     if request.method == "GET":
-        template = 'products/product_upload.html'
-        prod_form = ProductForm()
-        context = {'prod_form': prod_form}
         return render(request, template, context)
 
     if request.method == "POST":
@@ -40,10 +42,15 @@ def product_upload(request):
         prod_form = ProductForm(request.POST, instance=new_product)
         if prod_form.is_valid():
             prod_form.save()
-            template = 'products/product_successful.html'
             prod_count = company.product_set.all().count()
-            context = {'prod_count': prod_count}
-            return render(request, template, context)
+            return HttpResponseRedirect(reverse('products:product-success', kwargs={'num': prod_count}))
+        return render(request, template, context)
+
+
+def product_success(request, num):
+    template = 'products/product_successful.html'
+    context = {'prod_count': num}
+    return render(request, template, context)
 
 
 class ProductDetailView(DetailView):
