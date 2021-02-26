@@ -16,7 +16,7 @@ def change_image_path(image):
 
 # Create your models here.
 class Company(models.Model):
-    account = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
+    account = models.ForeignKey(User, null=False, blank=False, on_delete=models.CASCADE)
     company_name = models.CharField(max_length=150, null=True, blank=True)
     logo = models.ImageField(default='default/img/default.png', upload_to='default/img/', null=True)
     mantra = models.TextField(max_length=300, null=True, blank=True)

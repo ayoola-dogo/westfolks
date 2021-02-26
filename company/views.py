@@ -9,6 +9,7 @@ from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
+from company.models import Company
 
 
 # Create your views here.
@@ -33,7 +34,8 @@ class CreateCompanyView(CreateView):
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
-        company_form = self.form_class(request.POST)
+        company = Company(account=request.user)
+        company_form = self.form_class(request.POST, instance=company)
         if company_form.is_valid():
             company_form.save()
             return HttpResponseRedirect(reverse(self.redirect_field_name))
