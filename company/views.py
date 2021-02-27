@@ -11,6 +11,8 @@ from django.views.decorators.cache import never_cache
 from company.models import Company
 from django.utils import timezone
 from .com_files import move_company_image, get_company_logo, get_logo_url
+from django.contrib.messages.views import SuccessMessageMixin
+from django.views.generic.edit import UpdateView
 
 
 # Create your views here.
@@ -57,3 +59,30 @@ class CompanyView(View):
         company = self.model.objects.get(account=self.request.user.account)
         context = {'company': company}
         return render(request, self.template_name, context)
+
+
+class UpdateCompanyView(SuccessMessageMixin, UpdateView):
+    model = Company
+    form_class = CreateCompanyForm
+    template_name = 'company/update_company.html'
+    success_message = 'Your company data have been successfully updated'
+
+    @method_decorator(login_required)
+    @method_decorator(never_cache)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        if self.request.user.is_authenticated and self.request.user.is_active:
+            # Call the base implementation first to get a context
+            context = super().get_context_data(**kwargs)
+            # Add more context to the context
+            company = self.model.objects.get(account=self.request.user.account)
+            company_form = CreateCompanyForm(instance=company)
+            additional_context = {'company_form': company_form}
+            context.update(additional_context)
+            return context
+
+    def get_success_url(self):
+        view_name = 'company:view-company'
+        return reverse(view_name)

@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}Update Account{% endblock title %}
+
+{% block style %}
+{% endblock style %}
+
+{% block content %}
+<div class="wrapper">
+    <section class="section section-shaped section-lg">
+        <div class="shape shape-style-1 bg-gradient-default">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="container pt-lg-7">
+            <div class="row justify-content-center">
+                <div class="col-lg-5">
+                    <div class="card bg-secondary shadow border-0">
+                        <div class="card-body px-lg-5 py-lg-5">
+                            <div class="text-center text-muted mb-4">
+                                <small>Update Your Account</small>
+                            </div>
+                            <form method="post" role="form">
+                                 {% csrf_token %}
+                                <div class="form-group">
+                                    <div class="input-group input-group-alternative mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="ni ni-single-02"></i></span>
+                                        </div>
+                                        <input type="text" name="first_name" class="form-control" id="{{ user_form.id_first_name }}" value="{{ user_form.first_name.value }}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group input-group-alternative mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="ni ni-single-02"></i></span>
+                                        </div>
+                                        <input type="text" name="last_name" class="form-control" id="{{ user_form.id_last_name }}" value="{{ user_form.last_name.value }}">
+                                    </div>
+                                </div>
+                                <div class="form-group focused">
+                                    <div class="input-group input-group-alternative">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+                                        </div>
+                                        <input type="email" name="email" class="form-control"
+                                               id="{{ user_form.id_email }}" value="{{ user_form.email.value }}">
+                                        {{ user_form.email.errors }}
+                                    </div>
+                                </div>
+                                <a href="" class="text-muted font-italic"><small><span class="text-info font-weight-700">Click here to reset your password</span></small></a>
+                                <div class="text-center">
+                                    <button type="submit" value="update" class="btn btn-primary mt-4">Update Account</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock content %}

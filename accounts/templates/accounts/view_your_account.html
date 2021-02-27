@@ -49,7 +49,7 @@
                 </div>
                 <div class="col-lg-4 order-lg-3 text-lg-right align-self-lg-center">
                   <div class="card-profile-actions py-4 mt-lg-0">
-                    <a href="#" class="btn btn-sm btn-info mr-4 float-left account-btn">Update Account</a>
+                    <a href="{% url 'accounts:update-account' request.user.id %}" class="btn btn-sm btn-info mr-4 float-left account-btn">Update Account</a>
                     {% if company %}
                       <a href="{% url 'company:view-company' %}" class="btn btn-sm btn-default float-right company-btn">View Company</a>
                     {% else %}
@@ -61,23 +61,33 @@
                   <div class="card-profile-stats d-flex justify-content-center">
                     <div>
                       <span class="field-name">First Name</span>
-                      <span class="description field-value">Show first name</span>
+                      <span class="description field-value">{{ request.user.first_name }}</span>
                     </div>
                     <div>
                       <span class="field-name">Last Name</span>
-                      <span class="description field-value">Show last name</span>
+                      <span class="description field-value">{{ user.last_name }}</span>
                     </div>
                     <div>
-                      <span class="field-name">Business Name</span>
-                      <span class="description field-value">Show business name</span>
+                      <span class="field-name">Company Name</span>
+                      {% if company %}
+                      <span class="description field-value">{{ company.company_name }}</span>
+                      {% else %}
+                      <span class="description field-value">No associated company</span>
+                      {% endif %}
                     </div>
                   </div>
                 </div>
               </div>
               <div class="text-center mt-5">
-                <h3>Show company name<span class="font-weight-light"></span></h3>
-                <div class="h6 font-weight-300"><i class="ni location_pin mr-2"></i>show company location</div>
-                <div class="h6 mt-4"><i class="ni business_briefcase-24 mr-2"></i>Solution Manager - Creative Tim Officer</div>
+                {% if company %}
+                <h3>{{ company.company_name }}<span class="font-weight-light"></span></h3>
+                {% else %}
+                 <h3>No company associated with your account<span class="font-weight-light"></span></h3>
+                {% endif %}
+                <div class="h6 font-weight-300"><i class="ni location_pin mr-2"></i></div>
+                <div class="h6 mt-4"><i class="ni business_briefcase-24 mr-2"></i>Contrary to popular belief, WestFolks
+                  can help you manage your resources. It has roots in a piece of classical Latin literature from 45 BC,
+                  making it over 2000 years old. </div>
                 <div><i class="ni education_hat mr-2"></i>University of Computer Science</div>
               </div>
               <div class="mt-5 py-5 border-top text-center">

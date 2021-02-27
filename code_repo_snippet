@@ -32,3 +32,32 @@ def single(request, slug):
         return render(request, template, context)
     except ObjectDoesNotExist:
         raise Http404
+
+
+
+change password
+
+
+<div class="form-group focused">
+<div class="input-group input-group-alternative">
+    <div class="input-group-prepend">
+        <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+    </div>
+    <input type="password" name="password1" class="form-control" id="{{ user_form.id_password1 }}" placeholder="Change Password">
+</div>
+</div>
+<div class="text-muted font-italic"><small><span class="text-success font-weight-700">{{ user_form.password1.errors }}</span></small></div>
+<div class="form-group focused">
+<div class="input-group input-group-alternative">
+    <div class="input-group-prepend">
+        <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+    </div>
+    <input type="password" name="password2" class="form-control" id="{{ user_form.id_password2 }}" placeholder="Retype your password">
+    {{ user_form.password2.errors }}
+</div>
+</div>
+<div class="text-muted font-italic"><small><span class="text-success font-weight-700">{{ user_form.password2.errors }}</span></small></div>
+<div class="row my-4">
+<div class="col-12">
+</div>
+</div>

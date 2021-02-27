@@ -30,13 +30,13 @@ def move_company_image(request):
 def get_company_logo(model, user_email):
     media_root = os.path.join(BASE_DIR, 'static/media/')
     new_path = os.path.join(media_root, '{}/img/logo/'.format(user_email))
-    dir_path, filename = change_image_path(model.get_old_logo_url())
+    dir_path, filename = change_image_path(model.get_logo_url())
     print(os.path.join(new_path, filename))
     return os.path.join(new_path, filename)
 
 
 def get_logo_url(model, user_email):
     logo_url = '{}/img/logo/'.format(user_email)
-    dir_path, filename = change_image_path(model.get_old_logo_url())
+    dir_path, filename = change_image_path(model.get_logo_url())
     print(os.path.join(logo_url, filename))
     return os.path.join(logo_url, filename)

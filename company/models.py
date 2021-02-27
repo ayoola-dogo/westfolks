@@ -19,6 +19,7 @@ class Company(models.Model):
     logo = models.ImageField(default='default/img/default.png', upload_to="default/img/", null=True)
     mantra = models.TextField(max_length=300, null=True, blank=True)
     description = models.TextField(max_length=500, null=True, blank=True)
+    website_url = models.URLField(null=True, blank=True)
 
     def __str__(self):
         return '{}'.format(self.company_name)

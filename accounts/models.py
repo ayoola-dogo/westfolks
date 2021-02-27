@@ -11,7 +11,6 @@ User = get_user_model()
 # Create your models here.
 class Account(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    website_url = models.URLField()
 
     def __str__(self):
         return '{} Account'.format(self.user)

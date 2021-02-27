@@ -3,15 +3,12 @@ from django.views import View
 from .forms import UserLoginForm
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.contrib.auth.views import LogoutView as AuthLogoutView
-from django.contrib import messages
-from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth import authenticate, login, logout
-from django.utils.decorators import method_decorator
-from django.contrib.auth.decorators import login_required
-from django.core import exceptions
-from django.views.generic.edit import UpdateView
 from django.contrib.auth import get_user_model
-from django.views.decorators.cache import never_cache
+
+
+# User Model
+User = get_user_model()
 
 
 # Create your views here.

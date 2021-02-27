@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views import View
-from .forms import UserRegisterForm
+from .forms import UserRegisterForm, UserUpdateForm
 from django.urls import reverse
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.urls import reverse
@@ -13,6 +13,12 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 import pytz
 from company.models import Company
+from django.contrib.auth import get_user_model
+from django.views.generic.edit import UpdateView
+
+
+# User Model
+User = get_user_model()
 
 
 # Create your views here.
@@ -62,3 +68,30 @@ class UserProfileView(View):
             return render(request, self.template_name, context=context)
         else:
             return HttpResponseRedirect(reverse('accounts:register'))
+
+
+# Updating the user model rather than the account model
+class UpdateAccountView(SuccessMessageMixin, UpdateView):
+    model = User
+    form_class = UserUpdateForm
+    template_name = 'accounts/update_account.html'
+
+    @method_decorator(login_required)
+    @method_decorator(never_cache)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        if self.request.user.is_authenticated and self.request.user.is_active:
+            # Call the base implementation first to get a context
+            context = super().get_context_data(**kwargs)
+            # Add additional context
+            user = self.model.objects.get(email=self.request.user.email)
+            user_form = UserUpdateForm(instance=user)
+            additional_context = {'user_form': user_form}
+            context.update(additional_context)
+            return context
+
+    def get_success_url(self):
+        view_name = 'accounts:profile'
+        return reverse(view_name)
