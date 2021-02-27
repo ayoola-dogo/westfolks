@@ -38,11 +38,9 @@ class Product(models.Model):
             self.initial_path = self.image.path
             filename = change_image_path(self.image.path)
             print(self.company.account.user.email)
-            # if filename != "default.png":
-            #     self.image.path = os.path.join(settings.MEDIA_ROOT, "{}/img/{}".format(self.company.account.user.email,
-            #                                                                                   filename))
-            #     img.resize(output_size, Image.ANTIALIAS).save(self.image.path)
-            #     os.remove(self.initial_path)
+            # if filename != "default.png": self.image.path = os.path.join(settings.MEDIA_ROOT, "{}/img/{}".format(
+            # self.company.account.user.email, filename)) img.resize(output_size, Image.ANTIALIAS).save(
+            # self.image.path) os.remove(self.initial_path)
 
     def delete(self, using=None, keep_parents=False):
         super().delete()

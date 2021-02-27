@@ -23,12 +23,14 @@ def create_account(sender, **kwargs):
 
         # Create user account directory for file management
         BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        path1 = os.path.join(BASE_DIR, 'static/media/{}/img'.format(kwargs['instance'].email))
-        path2 = os.path.join(BASE_DIR, 'static/media/{}/resources'.format(kwargs['instance'].email))
+        path1 = os.path.join(BASE_DIR, 'static/media/{}/img/logo/'.format(kwargs['instance'].email))
+        path2 = os.path.join(BASE_DIR, 'static/media/{}/img/products/'.format(kwargs['instance'].email))
+        path3 = os.path.join(BASE_DIR, 'static/media/{}/resources/'.format(kwargs['instance'].email))
 
         try:
             os.makedirs(path1)
             os.makedirs(path2)
+            os.makedirs(path3)
         except OSError:
             print("Creation of the directory {} failed could be due to directory already exist".format(path1))
         else:

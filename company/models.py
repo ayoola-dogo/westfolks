@@ -24,7 +24,7 @@ class Company(models.Model):
         return '{}'.format(self.company_name)
 
     def get_logo_url(self):
-        pass
+        return self.logo.path
 
     # Override the save method
     def save(self, **kwargs):

@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from company.models import Company
 from django.utils import timezone
-from .com_files import move_company_image
+from .com_files import move_company_image, get_company_logo, get_logo_url
 
 
 # Create your views here.
@@ -35,7 +35,10 @@ class CreateCompanyView(View):
         context = {'company_form': company_form}
         if company_form.is_valid():
             company_form.save()
-            comp_logo = move_company_image(request)
+            move_company_image(request)
+            logo = get_logo_url(company, request.user.email)
+            company.logo = logo
+            company.save(update_fields=['logo'])
             return HttpResponseRedirect(reverse(self.redirect_field_name))
         return render(request, self.template_name, context)
 
