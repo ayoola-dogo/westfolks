@@ -12,8 +12,16 @@
                         <div>
                             <div>
                                 <ul>
-                                    <li><a href="#">Home</a></li>
+                                    {% if request.user.is_authenticated %}
+                                    <li><a href="{% url 'accounts:profile' %}">Home</a></li>
+                                    {% else %}
+                                    <li><a href="{% url 'accounts:register' %}">Home</a></li>
+                                    {% endif %}
+                                    {% if request.user.is_authenticated %}
                                     <li><a href="{% url 'accounts:profile' %}">View Your Account</a></li>
+                                    {% else %}
+                                    <li><a href="{% url 'accounts:profile' %}">View Your Account</a></li>
+                                    {% endif %}
                                     <li><a href="#">Support</a></li>
                                 </ul>
                                 <ul class="login-logout">

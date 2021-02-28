@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}View Your Account{% endblock title %}
+
+{% block style %}
+.profile-card {
+  margin-top: -10%;
+}
+.account-btn {
+}
+
+.company-btn {
+}
+
+.field-name{
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  display: block;
+}
+
+.field-value{
+}
+
+.align-element {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+{% endblock style %}
+
+}
+{% block content %}
+<div class="profile-page">
+  <div class="wrapper">
+      <section class="section-profile-cover section-shaped my-0">
+      </section>
+      <section class="section bg-secondary profile-card">
+        <div class="container">
+          <div class="card card-profile shadow mt--300">
+            <div class="px-4">
+              <div class="mt-2 py-3 text-center">
+                <div class="row justify-content-center">
+                  <div class="col-lg-10">
+                    <div class="card-profile-actions py-4 mt-lg-0">
+                        <form method="post" action="{% url 'products:spreadsheet-upload' %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row align-element">
+<!--                                <div class="col-md-3">-->
+<!--                                    <div class="form-group">-->
+<!--                                        {{ excel_form.title.label_tag }}-->
+<!--                                    </div>-->
+<!--                                </div>-->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ excel_form.title }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input type="file" name="file" class="form-control"
+                                               id="{{ excel_form.id_file }}"
+                                               placeholder="Excel File" accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+                                        {{ excel_form.file.errors }}
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit"
+                               class="btn btn-sm btn-info mr-4 float-none mt-4">Upload Spreadsheet</button>
+                        </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+  </div>
+</div>
+{% endblock content %}
+
+{% block script %}
+{% endblock script %}

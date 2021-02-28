@@ -4,6 +4,7 @@ from PIL import Image
 import os
 from accounts.models import Account
 from django.contrib.auth import get_user_model
+from shutil import rmtree
 
 
 def change_image_path(image):
@@ -24,6 +25,9 @@ class Company(models.Model):
     def __str__(self):
         return '{}'.format(self.company_name)
 
+    class Meta:
+        unique_together = ('company_name', 'website_url',)
+
     def get_logo_url(self):
         return self.logo.path
 
@@ -40,6 +44,7 @@ class Company(models.Model):
         dir_path, filename = change_image_path(self.logo.path)
         if str(filename) != "default.png":
             os.remove(self.logo.path)
+        # os.remove(os.path.join(settings.MEDIA_ROOT, '{}/resources/products.xlsx'.format(self.account.get_user())))
 
     class Meta:
         verbose_name = 'Company'

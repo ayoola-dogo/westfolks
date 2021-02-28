@@ -3,6 +3,10 @@
 {% block title %}View Your Account{% endblock title %}
 
 {% block style %}
+.container{
+  margin-top: 0%;
+}
+
 .account-btn {
 }
 
@@ -41,11 +45,6 @@
             <div class="px-4">
               <div class="row justify-content-center">
                 <div class="col-lg-3 order-lg-2">
-                  <div class="card-profile-image">
-                    <a href="javascript:;">
-                      <img src="{% static 'assets/img/faces/team-4.jpg' %}" class="rounded-circle">
-                    </a>
-                  </div>
                 </div>
                 <div class="col-lg-4 order-lg-3 text-lg-right align-self-lg-center">
                   <div class="card-profile-actions py-4 mt-lg-0">
@@ -68,7 +67,7 @@
                       <span class="description field-value">{{ user.last_name }}</span>
                     </div>
                     <div>
-                      <span class="field-name">Company Name</span>
+                      <span class="field-name">Company</span>
                       {% if company %}
                       <span class="description field-value">{{ company.company_name }}</span>
                       {% else %}

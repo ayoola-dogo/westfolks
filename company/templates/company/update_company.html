@@ -17,7 +17,7 @@
       <div class="row">
         <div class="col-md-12">
           <div class="form-group">
-            <input type="text" name="company_name" value="{{ company_form.company_name.value }}" class="form-control" id="{{ company_form.id_company_name }}">
+            <input type="text" name="company_name" value="{{ company_form.company_name.value }}" class="form-control" id="{{ company_form.id_company_name }}" placeholder="Company Name">
             {{ company_form.company_name.errors }}
           </div>
         </div>
@@ -40,10 +40,10 @@
         <div class="col-md-12">
           <div class="form-group">
             <div class="input-group mb-4">
-              <div class="input-group-prepend">
+               <div class="input-group-append">
                 <span class="input-group-text"><i class="ni ni-zoom-split-in"></i></span>
               </div>
-              <textarea name="mantra" class="form-control" id="{{ company_form.id_mantra }}" rows="3">{{ company_form.mantra.value }}</textarea>
+              <textarea name="mantra" class="form-control" id="{{ company_form.id_mantra }}" rows="3" placeholder="Mantra">{{ company_form.mantra.value }}</textarea>
               {{ company_form.mantra.errors }}
             </div>
           </div>
@@ -56,7 +56,7 @@
               <div class="input-group-append">
                 <span class="input-group-text"><i class="ni ni-zoom-split-in"></i></span>
               </div>
-              <textarea name="description" class="form-control" id="{{ company_form.id_company_description }}" rows="3">{{ company_form.description.value }}</textarea>
+              <textarea name="description" class="form-control" id="{{ company_form.id_company_description }}" rows="3" placeholder="Description">{{ company_form.description.value }}</textarea>
               {{ company_form.description.errors }}
             </div>
           </div>
@@ -64,12 +64,12 @@
         </div>
       <div class="row">
         <div class="col-md-12">
-          <div class="form-group focused">
-            <div class="input-group input-group-alternative">
-              <div class="input-group-prepend">
-                <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+          <div class="form-group">
+            <div class="input-group mb-4">
+               <div class="input-group-append">
+                <span class="input-group-text"><i class="ni ni-zoom-split-in"></i></span>
               </div>
-              <input type="url" name="website_url" class="form-control" id="{{ company_form.website_url }}" value="company_form.website_url.value" />
+              <input type="url" name="website_url" value="{{ company_form.website_url.value }}" class="form-control" id="{{ company_form.id_website_url }}" placeholder="Website URL"/>
               {{ company_form.website_url.errors }}
             </div>
           </div>

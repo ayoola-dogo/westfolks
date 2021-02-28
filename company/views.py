@@ -84,5 +84,10 @@ class UpdateCompanyView(SuccessMessageMixin, UpdateView):
             return context
 
     def get_success_url(self):
+        move_company_image(self.request)
+        company = Company.objects.get(account=self.request.user.account)
+        logo = get_logo_url(company, self.request.user.email)
+        company.logo = logo
+        company.save(update_fields=['logo'])
         view_name = 'company:view-company'
         return reverse(view_name)

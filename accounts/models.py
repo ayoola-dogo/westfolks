@@ -15,6 +15,9 @@ class Account(models.Model):
     def __str__(self):
         return '{} Account'.format(self.user)
 
+    def get_user(self):
+        return self.user
+
 
 def create_account(sender, **kwargs):
     if kwargs['created']:
@@ -35,7 +38,8 @@ def create_account(sender, **kwargs):
         else:
             print("Successfully created the directories")
 
-        # copy2(os.path.join(BASE_DIR, 'static/static_root/assets/img/default.png'), path1)
+        copy2(os.path.join(BASE_DIR, 'static/media/default/resources/products.xlsx'), path3)
+        copy2(os.path.join(BASE_DIR, 'static/media/default/img/default.png'), path1)
 
 
 post_save.connect(create_account, sender=User)

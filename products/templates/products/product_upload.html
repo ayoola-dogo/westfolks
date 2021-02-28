@@ -8,10 +8,26 @@
 .container{
   margin-top: 15%;
 }
+
+hr {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
 {% endblock style %}
 
 {% block content %}
 <section class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="alert alert-primary" role="alert">
+          You can upload multiple products by using a spreadsheet <a href="{% url 'products:spreadsheet-upload' %}" class="alert-link">here</a>
+        </div>
+      </div>
+    </div>
+    <hr> <!-- A horizontal line -->
     <form method="post" action="{% url 'products:product-upload' %}" enctype="multipart/form-data">
       {% csrf_token %}
       <div class="row">
