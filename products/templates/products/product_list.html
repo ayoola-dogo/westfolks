@@ -1,3 +1,11 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Product List{% endblock title %}
+
+
+
 {% block style %}
 
  .content-thread {
@@ -12,15 +20,6 @@
     -moz-box-shadow: 5px 10px 7px rgba(210, 208, 208, 0.9);
    -webkit-box-shadow: 5px 10px 7px rgba(210, 208, 208, 0.9);
     box-shadow: inset 5px 10px 7px rgba(210, 208, 208, 0.9);
-  }
-
-  .rounded-circle {
-    margin-left: 1vw;
-    margin-right: 1vw;
-    padding-top: 0.5vw;
-    padding-bottom: 0.5vw;
-    border-radius: 50%;
-    width: 70px;
   }
 
   .article-metadata {
@@ -142,46 +141,84 @@
     height: 50vh;
   }
 
+  #mantra-size {
+    font-size: 65%;
+  }
+
+  .container {
+       margin-top: -35%;
+    }
 {% endblock style %}
 
 {% block content %}
-    <div class="content-thread">
-      <article class="media">
-        <div class="media-body">
-          <h3 class="article-title">{{ thread.topic }}</h3>
-          <div class="article-metadata">
-            <img class="rounded-circle article-img" src="{{ thread.author.profile.image.url }}">
-            <div class="meta-info">
-              <a class="mr-user" href="#">{{ thread.author }}</a>
-              <small class="text-date" style="margin-top:0.5vw;">{{ thread.posted_date }}</small>
-            </div>
-            <div class="update-del">
-              {% if thread.author == request.user %}
-                <a class="btn-secondary" href="{% url 'forums:thread-update' thread.id %}">Update</a>
-                <a class="btn-danger" href="{% url 'forums:thread-delete' thread.id %}">Delete</a>
-              {% endif %}
-            </div>
-          </div>
-          <p class="article-content">{{ thread.content }}</p>
-          {% if posts %}
-            {% for post in posts %}
-            <div class="post-reply">
-              <hr class="hr-style" />
-              <p id="post-title">
-                Re: {{ thread.topic }}
-                <span>
-                  <img src="{{ post.author.profile.image.url }}" class="comment-image" alt="">
-                  <sup>{{ post.author.username }}</sup>
-                  <sub>posted on: {{ post.posted_date }}</sub>
-                </span>
-              </p>
-              <p id="post-content">{{ post.content }}</p>
-            </div>
-            {% endfor %}
-          {% endif %}
-          <a class="btn-reply" href="{% url 'posts:post-create' thread.id %}">Reply to Thread</a>
+<div class="profile-page">
+  <div class="wrapper">
+      <section class="section-profile-cover section-shaped my-0">
+        <!-- Circles background -->
+        <img class="bg-image" src="#" style="width: 100%;">
+        <!-- SVG separator -->
+        <div class="separator separator-bottom separator-skew">
+          <svg x="0" y="0" viewBox="0 0 2560 100" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
+            <polygon class="fill-secondary" points="2560 0 2560 100 0 100"></polygon>
+          </svg>
         </div>
-      </article>
-      <div class="empty-space"></div>
-    </div>
+      </section>
+      <section class="section bg-secondary profile-card">
+        <div class="container">
+          <div class="card card-profile shadow mt--300">
+            <div class="px-3">
+              <div class="row justify-content-center">
+                <div class="col-lg-3 order-lg-2">
+                  <div class="card-profile-image">
+                    <a href="javascript:;">
+                      <img src="{{ MEDIA_URL }}{{ request.user.account.company.logo.url }}" class="rounded-circle">
+                    </a>
+                  </div>
+                </div>
+                <div class="col-lg-4 order-lg-3 text-lg-right align-self-lg-center">
+                  <div class="card-profile-actions py-4 mt-lg-0">
+                    <a href="#" class="btn btn-sm mr-4 float-left account-btn"></a>
+                    <a href="#" class="btn btn-sm float-right company-btn"></a>
+                  </div>
+                </div>
+                <div class="col-lg-4 order-lg-1">
+                </div>
+              </div>
+                <div class="content-thread">
+                    <article class="media">
+                        <div class="media-body">
+                            <h5 class="article-title">{{ user.account.company.company_name }}<br/>
+                                <i id="mantra-size">{{ user.account.company.mantra }}</i></h5>
+                            <div class="article-metadata">
+                                <div>
+                                    <a href="#"></a>
+                                    <a href="#"></a>
+                                </div>
+                            </div>
+                            {% if products %}
+                            {% for product in products %}
+                            <div class="post-reply">
+                                <p id="post-title">
+                                    {{ product.product_name }}
+                                    <span>
+                                      <img src="#" class="comment-image" alt="">
+                                      <sup></sup>
+                                      <sub></sub>
+                                    </span>
+                                </p>
+                                <p id="post-content">{{ product.description }}</p>
+                                <a href="{% url 'products:product-detail' product.id %}">View Products</a>
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                    </article>
+                    <div class="empty-space"></div>
+                </div>
+                </div>
+          </div>
+        </div>
+      </section>
+  </div>
+</div>
 {% endblock %}

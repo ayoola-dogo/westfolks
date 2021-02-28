@@ -26,21 +26,16 @@ class Product(models.Model):
     def get_absolute_url(self):
         return reverse('products:product-detail', args=[self.pk, ])
 
+    def get_image_url(self):
+        return self.image.path
+
     # Override the save method
     def save(self, **kwargs):
         super().save()
         img = Image.open(self.image.path)
-        if img.width != 250 and img.height != 350:
-            output_size = (250, 350)
-            self.initial_path = self.image.path
-            filename = change_image_path(self.image.path)
-            print(self.company.account.user.email)
-            if filename != "default.png":
-                self.image.path = os.path.join(settings.MEDIA_ROOT, "{}/img/{}".format(
-                    self.company.account.user.email, filename))
-                img.resize(output_size, Image.ANTIALIAS).save(
-                    self.image.path)
-                os.remove(self.initial_path)
+        if img.width != 800 and img.height != 800:
+            output_size = (800, 800)
+            img.resize(output_size, Image.ANTIALIAS).save(self.image.path)
 
     def delete(self, using=None, keep_parents=False):
         super().delete()

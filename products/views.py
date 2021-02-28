@@ -1,20 +1,23 @@
 from django.shortcuts import render
 from django.urls import reverse
 from .models import Product
-from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView
 from .models import Product
 from .forms import ProductForm, UploadExcelForm
 from company.models import Company
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from spreadsheet.spreadsheet_processor import spreadsheet_db
+from spreadsheet.spreadsheet_processor import spreadsheet_db, write_product_from_db_spreadsheet
 from django.views.decorators.csrf import csrf_exempt
 import os
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import ObjectDoesNotExist
+from company.com_files import move_product_image, get_product_url
 
 
 # Create your views here.
+# Search feature not yet implemented
 def search(request):
     try:
         k = request.GET.get('k')
@@ -45,15 +48,24 @@ def product_upload(request):
         prod_form = ProductForm(request.POST, request.FILES, instance=new_product)
         if prod_form.is_valid():
             prod_form.save()
+            write_product_from_db_spreadsheet(request, new_product)
+            move_product_image(request)
+            image = get_product_url(new_product, request.user.email)
+            new_product.image = image
+            new_product.save(update_fields=['image'])
             prod_count = company.product_set.all().count()
             return HttpResponseRedirect(reverse('products:product-success', kwargs={'num': prod_count}))
         return render(request, template, context)
 
 
+@login_required
 def product_success(request, num):
-    template = 'products/product_successful.html'
-    context = {'prod_count': num}
-    return render(request, template, context)
+    if request.user.is_authenticated:
+        template = 'products/product_successful.html'
+        context = {'prod_count': num}
+        return render(request, template, context)
+    else:
+        return HttpResponseRedirect(reverse('user:login'))
 
 
 @login_required
@@ -89,16 +101,30 @@ def excel_processor(request):
         add_count = spreadsheet_db(request)
         company = Company.objects.get(account=request.user.account)
         prod_count = company.product_set.all().count()
-        print(prod_count)
         return HttpResponseRedirect(reverse('products:product-success', kwargs={'num': prod_count}))
     else:
         raise Http404
 
 
-class ProductDetailView(DetailView):
-    pass
+class ProductDetailView(LoginRequiredMixin, DetailView):
+    model = Product
+    context_object_name = 'product'
 
 
-class ProductListView(ListView):
-    pass
+class ProductListView(LoginRequiredMixin, ListView):
+    model = Product
+    template_name = 'products/product_list.html'
+    ordering = ['pk']
+    paginate_by = 10
 
+    def get(self, request, *args, **kwargs):
+        try:
+            company = Company.objects.get(pk=self.kwargs['company_id'])
+            if self.request.user.account == company.account:
+                products = company.product_set.all()
+                context = {'products': products}
+                return render(request, self.template_name, context)
+            else:
+                raise Http404
+        except ObjectDoesNotExist:
+            raise Http404

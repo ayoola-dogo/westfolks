@@ -62,7 +62,7 @@
                 <div>
                   <div><i class="ni education_hat mr-2"></i>You now have {{ prod_count }} products</div>
                 </div>
-                <div class="btn"><a href="{% url 'products:product-upload' %}"><i class="ni education_hat mr-2"></i>View</a></div>
+                <div class="btn"><a href="{% url 'products:product-list' request.user.account.company.id %}"><i class="ni education_hat mr-2"></i>View Products</a></div>
                 <div>
                 </div>
               </div>

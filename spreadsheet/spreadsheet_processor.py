@@ -59,14 +59,13 @@ def spreadsheet_db(request):
         del product_data['3']
         product_data['url'] = product_data['4']
         del product_data['4']
-        product_data['company'] = company.pk
+        product_data['company'] = company
 
         print(product_data)
 
-        product_serializer = ProductSerializer(data=product_data)
+        # product_serializer = ProductSerializer(data=product_data)
 
-        if product_serializer.is_valid():
-            product_serializer.save()
+        Product.objects.create(**product_data)
 
         count += 1
 
@@ -74,3 +73,24 @@ def spreadsheet_db(request):
     delete_uploaded_file(request)
 
     return count
+
+
+def write_product_from_db_spreadsheet(request, product_instance):
+    user_email = request.user.email
+    product_db = os.path.join(BASE_DIR, 'static/media/{}/resources/products.xlsx'.format(user_email))
+    product_name = product_instance.product_name
+    category = product_instance.category
+    description = product_instance.description
+    url = product_instance.url
+
+    products_wb = openpyxl.load_workbook(product_db)
+
+    products_sheet_1 = products_wb['Sheet1']
+    prod_max_row = products_sheet_1.max_row
+
+    products_sheet_1.cell(prod_max_row + 1, 1).value = product_name
+    products_sheet_1.cell(prod_max_row + 1, 2).value = category
+    products_sheet_1.cell(prod_max_row + 1, 3).value = description
+    products_sheet_1.cell(prod_max_row + 1, 4).value = url
+
+    products_wb.save(product_db)
