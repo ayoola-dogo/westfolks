@@ -32,34 +32,54 @@ def delete_uploaded_file(request):
 
 
 def spreadsheet_db(request):
-    upload_wb = openpyxl.load_workbook(upload_products(request)[0])
-    products_wb = openpyxl.load_workbook(upload_products(request)[1])
+    upload_wb = openpyxl.load_workbook(upload_products(request)[0], data_only=True)
+    products_wb = openpyxl.load_workbook(upload_products(request)[1], data_only=True)
 
     upload_sheet_1 = upload_wb['Sheet1']
     products_sheet_1 = products_wb['Sheet1']
 
     up_max_row = upload_sheet_1.max_row
+    up_max_col = upload_sheet_1.max_column
 
     prod_max_row = products_sheet_1.max_row
+
+    wanted_column = ['product-name', 'product-category', 'product-description', 'product-url', 'product-image']
+
+    upload_wanted = dict()
+
+    for wanted in wanted_column:
+        for column in range(1, up_max_col + 1):
+            column_name = upload_sheet_1.cell(row=1, column=column).value
+            if wanted == column_name.lower():
+                upload_wanted[f'{wanted}'] = column   # upload_wanted['product-name'] = 1   - example
 
     count = 0
 
     company = Company.objects.get(account=request.user.account)
 
     for row in range(2, up_max_row + 1):
-        for column in range(1, 5):
-            products_sheet_1.cell(prod_max_row + row - 1, column).value = \
-                upload_sheet_1.cell(row, column).value
-            product_data[f'{column}'] = upload_sheet_1.cell(row, column).value
-        product_data['product_name'] = product_data['1']
-        del product_data['1']
-        product_data['category'] = product_data['2']
-        del product_data['2']
-        product_data['description'] = product_data['3']
-        del product_data['3']
-        product_data['url'] = product_data['4']
-        del product_data['4']
-        product_data['company'] = company
+        for column_name, column_number in upload_wanted.items():
+            if column_name == wanted_column[0]:
+                products_sheet_1.cell(prod_max_row + row - 1, 1).value = \
+                    upload_sheet_1.cell(row, column_number).value
+                product_data['product_name'] = upload_sheet_1.cell(row, column_number).value
+            if column_name == wanted_column[1]:
+                products_sheet_1.cell(prod_max_row + row - 1, 2).value = \
+                    upload_sheet_1.cell(row, column_number).value
+                product_data['category'] = upload_sheet_1.cell(row, column_number).value
+            if column_name == wanted_column[2]:
+                products_sheet_1.cell(prod_max_row + row - 1, 3).value = \
+                    upload_sheet_1.cell(row, column_number).value
+                product_data['description'] = upload_sheet_1.cell(row, column_number).value
+            if column_name == wanted_column[3]:
+                products_sheet_1.cell(prod_max_row + row - 1, 4).value = \
+                    upload_sheet_1.cell(row, column_number).value
+                product_data['url'] = upload_sheet_1.cell(row, column_number).value
+            if column_name == wanted_column[4]:
+                products_sheet_1.cell(prod_max_row + row - 1, 5).value = \
+                    upload_sheet_1.cell(row, column_number).value
+                product_data['image'] = upload_sheet_1.cell(row, column_number).value
+            product_data['company'] = company
 
         print(product_data)
 
@@ -82,6 +102,7 @@ def write_product_from_db_spreadsheet(request, product_instance):
     category = product_instance.category
     description = product_instance.description
     url = product_instance.url
+    image = product_instance.image.path
 
     products_wb = openpyxl.load_workbook(product_db)
 
@@ -92,5 +113,6 @@ def write_product_from_db_spreadsheet(request, product_instance):
     products_sheet_1.cell(prod_max_row + 1, 2).value = category
     products_sheet_1.cell(prod_max_row + 1, 3).value = description
     products_sheet_1.cell(prod_max_row + 1, 4).value = url
+    products_sheet_1.cell(prod_max_row + 1, 5).value = image
 
     products_wb.save(product_db)

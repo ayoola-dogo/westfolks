@@ -39,6 +39,7 @@ def create_account(sender, **kwargs):
             print("Successfully created the directories")
 
         copy2(os.path.join(BASE_DIR, 'static/media/default/resources/products.xlsx'), path3)
+        copy2(os.path.join(BASE_DIR, 'static/media/default/img/default.png'), path2)
         copy2(os.path.join(BASE_DIR, 'static/media/default/img/default.png'), path1)
 
 

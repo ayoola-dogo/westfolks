@@ -1,14 +1,16 @@
 from django.urls import path
-from .views import ProductDetailView, ProductListView, product_upload, product_success, spreadsheet_upload, excel_processor
+from .views import ProductDetailView, ProductListView, product_upload, product_success, spreadsheet_upload,\
+    excel_processor, upload_error
 
 
 app_name = 'products'
 
 urlpatterns = [
-    path('product-detail/<int:pk>/', ProductDetailView.as_view(), name='product-detail'),
+    path('product-detail/<slug:slug>/', ProductDetailView.as_view(), name='product-detail'),
     path('product-list/<int:company_id>', ProductListView.as_view(), name='product-list'),
     path('product-upload/', product_upload, name='product-upload'),
     path('product-success-uploaded/<int:num>', product_success, name='product-success'),
     path('spreadsheet-upload/', spreadsheet_upload, name='spreadsheet-upload'),
-    path('spreadsheet-process/', excel_processor, name='spreadsheet-process')
+    path('spreadsheet-process/', excel_processor, name='spreadsheet-process'),
+    path('upload-error/', upload_error, name='upload-error')
 ]

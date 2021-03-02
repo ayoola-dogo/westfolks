@@ -207,7 +207,7 @@
                                     </span>
                                 </p>
                                 <p id="post-content">{{ product.description }}</p>
-                                <a href="{% url 'products:product-detail' product.id %}">View Products</a>
+                                <a href="{% url 'products:product-detail' product.slug %}">View Products</a>
                             </div>
                             {% endfor %}
                             {% endif %}

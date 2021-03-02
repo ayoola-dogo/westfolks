@@ -8,12 +8,13 @@ from .forms import ProductForm, UploadExcelForm
 from company.models import Company
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from spreadsheet.spreadsheet_processor import spreadsheet_db, write_product_from_db_spreadsheet
+from spreadsheet.spreadsheet_processor import spreadsheet_db, write_product_from_db_spreadsheet, delete_uploaded_file
 from django.views.decorators.csrf import csrf_exempt
 import os
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 from company.com_files import move_product_image, get_product_url
+from django.core.exceptions import FieldDoesNotExist
 
 
 # Create your views here.
@@ -52,6 +53,7 @@ def product_upload(request):
             move_product_image(request)
             image = get_product_url(new_product, request.user.email)
             new_product.image = image
+            # Could also use a setter in the model
             new_product.save(update_fields=['image'])
             prod_count = company.product_set.all().count()
             return HttpResponseRedirect(reverse('products:product-success', kwargs={'num': prod_count}))
@@ -98,10 +100,14 @@ def spreadsheet_upload(request):
 @csrf_exempt
 def excel_processor(request):
     if request.user.is_authenticated and request.user.is_active:
-        add_count = spreadsheet_db(request)
-        company = Company.objects.get(account=request.user.account)
-        prod_count = company.product_set.all().count()
-        return HttpResponseRedirect(reverse('products:product-success', kwargs={'num': prod_count}))
+        try:
+            add_count = spreadsheet_db(request)
+            company = Company.objects.get(account=request.user.account)
+            prod_count = company.product_set.all().count()
+            return HttpResponseRedirect(reverse('products:product-success', kwargs={'num': prod_count}))
+        except (FieldDoesNotExist, AttributeError, KeyError):
+            return HttpResponseRedirect(reverse('products:upload-error'))
+
     else:
         raise Http404
 
@@ -109,6 +115,9 @@ def excel_processor(request):
 class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
     context_object_name = 'product'
+
+    def get_object(self, **kwargs):
+        return Product.objects.get(slug=self.kwargs['slug'])
 
 
 class ProductListView(LoginRequiredMixin, ListView):
@@ -121,10 +130,18 @@ class ProductListView(LoginRequiredMixin, ListView):
         try:
             company = Company.objects.get(pk=self.kwargs['company_id'])
             if self.request.user.account == company.account:
-                products = company.product_set.all()
+                products = company.product_set.all().order_by('-id')[:10]
                 context = {'products': products}
                 return render(request, self.template_name, context)
             else:
                 raise Http404
         except ObjectDoesNotExist:
             raise Http404
+
+
+@login_required
+def upload_error(request):
+    template = 'products/product_upload_error.html'
+    context = {}
+    delete_uploaded_file(request)
+    return render(request, template, context)
