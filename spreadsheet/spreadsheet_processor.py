@@ -34,6 +34,7 @@ def delete_uploaded_file(request):
 def spreadsheet_db(request):
     upload_wb = openpyxl.load_workbook(upload_products(request)[0], data_only=True)
     products_wb = openpyxl.load_workbook(upload_products(request)[1], data_only=True)
+    print(upload_wb)
 
     upload_sheet_1 = upload_wb['Sheet1']
     products_sheet_1 = products_wb['Sheet1']
@@ -50,7 +51,7 @@ def spreadsheet_db(request):
     for wanted in wanted_column:
         for column in range(1, up_max_col + 1):
             column_name = upload_sheet_1.cell(row=1, column=column).value
-            if wanted == column_name.lower():
+            if column_name and wanted == column_name.lower():
                 upload_wanted[f'{wanted}'] = column   # upload_wanted['product-name'] = 1   - example
 
     count = 0
@@ -59,23 +60,23 @@ def spreadsheet_db(request):
 
     for row in range(2, up_max_row + 1):
         for column_name, column_number in upload_wanted.items():
-            if column_name == wanted_column[0]:
+            if column_name == wanted_column[0] and upload_sheet_1.cell(row, column_number).value:
                 products_sheet_1.cell(prod_max_row + row - 1, 1).value = \
                     upload_sheet_1.cell(row, column_number).value
                 product_data['product_name'] = upload_sheet_1.cell(row, column_number).value
-            if column_name == wanted_column[1]:
+            if column_name == wanted_column[1] and upload_sheet_1.cell(row, column_number).value:
                 products_sheet_1.cell(prod_max_row + row - 1, 2).value = \
                     upload_sheet_1.cell(row, column_number).value
                 product_data['category'] = upload_sheet_1.cell(row, column_number).value
-            if column_name == wanted_column[2]:
+            if column_name == wanted_column[2] and upload_sheet_1.cell(row, column_number).value:
                 products_sheet_1.cell(prod_max_row + row - 1, 3).value = \
                     upload_sheet_1.cell(row, column_number).value
                 product_data['description'] = upload_sheet_1.cell(row, column_number).value
-            if column_name == wanted_column[3]:
+            if column_name == wanted_column[3] and upload_sheet_1.cell(row, column_number).value:
                 products_sheet_1.cell(prod_max_row + row - 1, 4).value = \
                     upload_sheet_1.cell(row, column_number).value
                 product_data['url'] = upload_sheet_1.cell(row, column_number).value
-            if column_name == wanted_column[4]:
+            if column_name == wanted_column[4] and upload_sheet_1.cell(row, column_number).value:
                 products_sheet_1.cell(prod_max_row + row - 1, 5).value = \
                     upload_sheet_1.cell(row, column_number).value
                 product_data['image'] = upload_sheet_1.cell(row, column_number).value
